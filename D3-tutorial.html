@@ -8,9 +8,9 @@
 <body>
 	<script type="text/javascript">
 		//parse csv file
-		d3.csv('http://127.0.0.1:8887/sample.csv', type, myArrayObjects => {
-			myArrayObjects.forEach(data => console.log(data.year + data.age))
-		});
+		// d3.csv('http://127.0.0.1:8887/sample.csv', type, myArrayObjects => {
+		// 	myArrayObjects.forEach(data => console.log(data.year + data.age))
+		// });
 
 		function type(data){
 			data.year = parseFloat(data.year);
@@ -38,28 +38,34 @@
 
 		//D3 DOM manipulation
 		let svg = d3.select('body').append('svg');
-		svg.attr('width', 250);
-		svg.attr('height', 250);
+		svg.attr('width', 500);
+		svg.attr('height', 500);
 
 		let rect = svg.append('rect');
 		rect.attr('x', 50);
-		rect.attr('y', 50);
+		rect.attr('y', 0);
 		rect.attr('width', 20);
 		rect.attr('height', 20);
 
 		//D3 DOM manipulation 2
-		let data = [1, 2, 3, 4, 5];
+
+		//let data = [1, 2, 3, 4, 5];
 		let scale2 = d3.scaleLinear()
 			.domain([1, 5])
-			.range([0, 200]);
+			.range([0, 400]);
 
-		svg.selectAll('rect')
-				.data(data)
-				.enter().append('rect')
+		function renderRec(data, color){
+			let rects = svg.selectAll('rect').data(data);
+
+			rects.enter().append('rect')
 				.attr('x', scale2)
-				.attr('y', 100)
+				.attr('y', 50)
 				.attr('width', 20)
-				.attr('height', 20);
+				.attr('height', 20)
+				.attr('fill', color);
+		}		
+		renderRec([0, 1, 2, 3], 'red');
+		renderRec([0, 1, 2, 3, 4, 5], 'blue');
 
 
 
