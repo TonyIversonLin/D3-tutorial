@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>D3 Tutorial 1</title>
+	<meta charset="utf-8">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script> 
+</head>
+<body>
+	<script type="text/javascript">
+		//parse csv file
+		d3.csv('http://127.0.0.1:8887/sample.csv', type, myArrayObjects => {
+			myArrayObjects.forEach(data => console.log(data.year + data.age))
+		});
+
+		function type(data){
+			data.year = parseFloat(data.year);
+			data.age = parseFloat(data.age);
+			return data;
+		}
+
+		//quantitative linear scale
+		let scale = d3.scaleLinear()
+			.domain([0, 1])  //data space   input range
+			.range([0, 100]); //pixel space   output range
+
+		console.log(scale(0));
+		console.log(scale(0.8));
+		console.log(scale(1));
+		console.log(scale.domain());
+		console.log(scale.range());
+
+		//quantitative ordinal scale
+		let scaleOrdinal = d3.scaleOrdinal()
+			.domain(['A', 'B', 'C', 'D', 'E'])
+			.range(['Apple', 'Banana', 'Coconet', 'peach']);
+		console.log(scaleOrdinal('E'));
+
+
+		//D3 DOM manipulation
+		let svg = d3.select('body').append('svg');
+		svg.attr('width', 250);
+		svg.attr('height', 250);
+
+		let rect = svg.append('rect');
+		rect.attr('x', 50);
+		rect.attr('y', 50);
+		rect.attr('width', 20);
+		rect.attr('height', 20);
+
+		//D3 DOM manipulation 2
+		let data = [1, 2, 3, 4, 5];
+		let scale2 = d3.scaleLinear()
+			.domain([1, 5])
+			.range([0, 200]);
+
+		svg.selectAll('rect')
+				.data(data)
+				.enter().append('rect')
+				.attr('x', scale2)
+				.attr('y', 100)
+				.attr('width', 20)
+				.attr('height', 20);
+
+
+
+	</script>
+</body>
+</html>
