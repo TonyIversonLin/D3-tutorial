@@ -8,6 +8,7 @@
 <body>
 	<script type="text/javascript">
 		//parse csv file
+
 		// d3.csv('http://127.0.0.1:8887/sample.csv', type, myArrayObjects => {
 		// 	myArrayObjects.forEach(data => console.log(data.year + data.age))
 		// });
@@ -38,8 +39,8 @@
 
 		//D3 DOM manipulation
 		let svg = d3.select('body').append('svg');
-		svg.attr('width', 500);
-		svg.attr('height', 500);
+		svg.attr('width', 250);
+		svg.attr('height', 250);
 
 		let rect = svg.append('rect');
 		rect.attr('x', 50);
@@ -52,10 +53,13 @@
 		//let data = [1, 2, 3, 4, 5];
 		let scale2 = d3.scaleLinear()
 			.domain([1, 5])
-			.range([0, 400]);
+			.range([0, 200]);
 
 		function renderRec(data, color){
 			let rects = svg.selectAll('rect').data(data);
+
+			//enter only execute when there are new elements, and that is why only the last two is blue
+
 
 			rects.enter().append('rect')
 				.attr('x', scale2)
@@ -64,9 +68,39 @@
 				.attr('height', 20)
 				.attr('fill', color);
 		}		
+
 		renderRec([0, 1, 2, 3], 'red');
+		//enter does not update data, so it does not care about the 0, 1, 2, 3
 		renderRec([0, 1, 2, 3, 4, 5], 'blue');
 
+
+		//D3 DOM manipulation 3
+		let svg2 = d3.select('body').append('svg');
+		svg2.attr('width', 250);
+		svg2.attr('height', 250);
+
+		function renderRec2(data, color){
+			//bind data
+			let rects = svg2.selectAll('rect').data(data);
+
+			//Enter / creating new element with genertal property
+			rects.enter().append('rect')
+				.attr('y', 50)
+				.attr('width', 20)
+				.attr('height', 20)
+				.merge(rects)    // updating phase / setting indivial property
+				.attr('x', scale2)
+				.attr('fill', color);
+
+			//Exit / deleting element that is co with the new data
+			rects.exit().remove();
+		}
+
+		setTimeout(function(){renderRec2([1, 2, 2.5], 'red')}, 1000);
+		setTimeout(function(){renderRec2([1, 2, 3, 4, 5], 'blue')}, 2000);
+		setTimeout(function(){renderRec2([1, 2], 'green')}, 3000);
+		setTimeout(function(){renderRec2([3, 4, 5], 'cyan')}, 4000);
+		setTimeout(function(){renderRec2([4, 5], 'magenta')}, 5000);
 
 
 	</script>
