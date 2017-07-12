@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>D3 Basic</title>
+</head>
+<body>
+	<script type="text/javascript">
+		
+		//parse csv file
+
+		d3.csv('http://127.0.0.1:8887/sample.csv', type, myArrayObjects => {
+			myArrayObjects.forEach(data => console.log(data.year + data.age))
+		});
+
+		function type(data){
+			data.year = parseFloat(data.year);
+			data.age = parseFloat(data.age);
+			return data;
+		}
+
+		//quantitative linear scale
+		let scale = d3.scaleLinear()
+			.domain([0, 1])  //data space   input range
+			.range([0, 100]); //pixel space   output range
+
+		console.log(scale(0));
+		console.log(scale(0.8));
+		console.log(scale(1));
+		console.log(scale.domain());
+		console.log(scale.range());
+
+		//quantitative ordinal scale
+		let scaleOrdinal = d3.scaleOrdinal()
+			.domain(['A', 'B', 'C', 'D', 'E'])
+			.range(['Apple', 'Banana', 'Coconet', 'peach']);
+		console.log(scaleOrdinal('E'));
+
+	</script>
+</body>
+</html>
